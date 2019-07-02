@@ -1,6 +1,8 @@
 from google.cloud import datastore
 from src.util.ds import ds
+from src.util.config import color
 from discord.ext import commands
+import discord
 from src.util.checks import is_admin
 
 
@@ -36,8 +38,18 @@ class Reg(commands.Cog):
             key = ds.key(str(ctx.guild.id), str(args[0]))
             query.key_filter(key, '=')
             results = list(query.fetch())
-        string_builder = "\n".join([f"{result.key.id_or_name} :: {result['value']}" for result in results])
-        await ctx.send(f"```Registry Query:\n{string_builder}```")
+        embed = discord.Embed(
+            title="Registry Query",
+            color=color['message']
+        )
+        embed.set_footer(text=f"Invoked by: {ctx.message.author.name}")
+        for result in results:
+            embed.add_field(
+                name=f"Key: {result.key.id_or_name}",
+                value=f"Value: {result['value']}",
+                inline=False
+            )
+        await ctx.send(embed=embed)
 
     @registry.group(
         name="set",
@@ -55,6 +67,20 @@ class Reg(commands.Cog):
             await ctx.send(f"{type(e).__name__}: {e}")
         else:
             await ctx.send(f"Registry Value Added!\nName: {task['id']}\nValue: {task['value']}")
+
+    @registry.group(
+        name="delete",
+        pass_context=True
+    )
+    @is_admin()
+    async def delete(self, ctx, *args):
+        try:
+            key = ds.key(str(ctx.guild.id), str(args[0]))
+            ds.delete(key)
+        except Exception as e:
+            await ctx.send(f"{type(e).__name__}: {e}")
+        else:
+            await ctx.send(f"Registry Value Deleted!")
 
 
 def setup(client):
