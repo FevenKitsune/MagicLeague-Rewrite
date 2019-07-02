@@ -1,5 +1,7 @@
+from google.cloud import datastore
 from src.util.ds import ds
 from discord.ext import commands
+from src.util.checks import is_admin
 
 
 class Reg(commands.Cog):
@@ -13,6 +15,7 @@ class Reg(commands.Cog):
         brief="Access the bot configuration registry.",
         pass_context=True
     )
+    @is_admin()
     async def registry(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.send("No subcommand invoked.")
@@ -21,15 +24,31 @@ class Reg(commands.Cog):
         name="get",
         pass_context=True
     )
-    async def get(self, ctx):
+    @is_admin()
+    async def get(self, ctx, *args):
+        if not args:
+            query = ds.query(kind=str(ctx.guild.id))
+            results = list(query.fetch())
+            string_builder = "\n".join([f"{result.key.id_or_name} :: {result['value']}" for result in results])
+            await ctx.send(f"```{string_builder}```")
         await ctx.send("Get command")
 
     @registry.group(
         name="set",
         pass_context=True
     )
-    async def set(self, ctx):
-        await ctx.send("Set command")
+    @is_admin()
+    async def set(self, ctx, *args):
+        try:
+            key = ds.key(str(ctx.guild.id), str(args[0]))
+            task = datastore.Entity(key=key)
+            task['id'] = str(args[0])
+            task['value'] = str(args[1])
+            ds.put(task)
+        except Exception as e:
+            await ctx.send(f"{type(e).__name__}: {e}")
+        else:
+            await ctx.send(f"Registry Value Added!\nName: {task['id']}\nValue: {task['value']}")
 
 
 def setup(client):

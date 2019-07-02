@@ -1,9 +1,10 @@
-import discord
+import logging
 import os
+import discord
 from discord.ext import commands
 from src.util.ds import ds
 from src.util.prefix import get_prefix, set_prefix
-import logging
+
 
 logger = logging.getLogger("discord")
 client = commands.Bot(
