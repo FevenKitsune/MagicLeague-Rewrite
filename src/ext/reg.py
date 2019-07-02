@@ -1,5 +1,4 @@
-from src.main import ds
-
+from src.util.ds import ds
 from discord.ext import commands
 
 

@@ -1,4 +1,4 @@
-from src.main import ds
+from src.util.ds import ds
 
 
 async def get_prefix(bot, message):
