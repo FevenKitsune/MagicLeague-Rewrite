@@ -3,7 +3,7 @@ import os
 import discord
 from discord.ext import commands
 from src.util.ds import ds
-from src.util.prefix import get_prefix, set_prefix
+from src.util.prefix import get_prefix
 
 
 logger = logging.getLogger("discord")

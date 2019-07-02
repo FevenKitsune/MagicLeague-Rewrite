@@ -27,11 +27,17 @@ class Reg(commands.Cog):
     @is_admin()
     async def get(self, ctx, *args):
         if not args:
+            # If no other arguments are passed, list entire registry
             query = ds.query(kind=str(ctx.guild.id))
             results = list(query.fetch())
-            string_builder = "\n".join([f"{result.key.id_or_name} :: {result['value']}" for result in results])
-            await ctx.send(f"```{string_builder}```")
-        await ctx.send("Get command")
+        else:
+            # If an argument is passed, list registry with name's matching argument value
+            query = ds.query(kind=str(ctx.guild.id))
+            key = ds.key(str(ctx.guild.id), str(args[0]))
+            query.key_filter(key, '=')
+            results = list(query.fetch())
+        string_builder = "\n".join([f"{result.key.id_or_name} :: {result['value']}" for result in results])
+        await ctx.send(f"```Registry Query:\n{string_builder}```")
 
     @registry.group(
         name="set",
