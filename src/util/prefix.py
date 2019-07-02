@@ -1,4 +1,3 @@
-from google.cloud import datastore
 from src.main import ds
 
 
