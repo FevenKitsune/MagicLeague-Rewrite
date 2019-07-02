@@ -8,4 +8,3 @@ client = commands.Bot(
     description="MagicLeague-RW",
     command_prefix=get_prefix
 )
-
