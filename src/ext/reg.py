@@ -11,6 +11,23 @@ class Reg(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    async def print_registry(self, ctx):
+        embed = discord.Embed(
+            title="Registry Query",
+            color=color['message']
+        )
+        query = ds.query(kind=str(ctx.guild.id))
+        results = list(query.fetch())
+        embed.set_footer(text=f"Invoked by: {ctx.message.author.name}")
+        for result in results:
+            embed.add_field(
+                name=f"Key: {result.key.id_or_name}",
+                value=f"Value: {result['value']}",
+                inline=False
+            )
+        await ctx.send(embed=embed)
+
+    # Registry Group
     @commands.group(
         name="registry",
         aliases=["config", "reg", "cfg"],
@@ -28,28 +45,7 @@ class Reg(commands.Cog):
     )
     @is_admin()
     async def get(self, ctx, *args):
-        if not args:
-            # If no other arguments are passed, list entire registry
-            query = ds.query(kind=str(ctx.guild.id))
-            results = list(query.fetch())
-        else:
-            # If an argument is passed, list registry with name's matching argument value
-            query = ds.query(kind=str(ctx.guild.id))
-            key = ds.key(str(ctx.guild.id), str(args[0]))
-            query.key_filter(key, '=')
-            results = list(query.fetch())
-        embed = discord.Embed(
-            title="Registry Query",
-            color=color['message']
-        )
-        embed.set_footer(text=f"Invoked by: {ctx.message.author.name}")
-        for result in results:
-            embed.add_field(
-                name=f"Key: {result.key.id_or_name}",
-                value=f"Value: {result['value']}",
-                inline=False
-            )
-        await ctx.send(embed=embed)
+        await self.print_registry(ctx)
 
     @registry.group(
         name="set",
@@ -67,6 +63,7 @@ class Reg(commands.Cog):
             await ctx.send(f"{type(e).__name__}: {e}")
         else:
             await ctx.send(f"Registry Value Added!\nName: {task['id']}\nValue: {task['value']}")
+        await self.print_registry(ctx, results)
 
     @registry.group(
         name="delete",
