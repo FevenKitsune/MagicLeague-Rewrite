@@ -2,7 +2,7 @@ import logging
 import os
 import discord
 from discord.ext import commands
-from src.util.ds import extensions
+from src.util.config import extensions
 from src.util.prefix import get_prefix
 
 
