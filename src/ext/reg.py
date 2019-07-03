@@ -72,7 +72,7 @@ class Reg(commands.Cog):
     @is_admin()
     async def delete(self, ctx, *args):
         try:
-            key = ds.key(str(ctx.guild.id), str(args[0]))
+            key = ds.key(str(ctx.guild.id), str(args[0]).lower)
             ds.delete(key)
         except Exception as e:
             await ctx.send(f"{type(e).__name__}: {e}")
