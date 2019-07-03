@@ -58,7 +58,6 @@ class Reg(commands.Cog):
             if args[0].lower
             key = ds.key(str(ctx.guild.id), str(args[0]).lower)
             task = datastore.Entity(key=key)
-            task['id'] = str(args[0])
             task['value'] = str(args[1])
             ds.put(task)
         except Exception as e:
