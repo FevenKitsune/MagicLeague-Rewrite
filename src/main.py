@@ -6,6 +6,7 @@ from src.util.prefix import get_prefix
 
 
 logger = logging.getLogger("discord")
+logger.setLevel(logging.DEBUG)
 client = commands.Bot(
     description="MagicLeague-RW",
     command_prefix=get_prefix

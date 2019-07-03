@@ -1,6 +1,6 @@
 from google.cloud import datastore
 from src.util.ds import ds
-from src.util.config import color
+from src.util.config import color, valid_keys
 from discord.ext import commands
 import discord
 from src.util.checks import is_admin
@@ -55,7 +55,8 @@ class Reg(commands.Cog):
     @is_admin()
     async def set(self, ctx, *args):
         try:
-            if args[0].lower
+            if args[0].lower not in valid_keys:
+                raise UserWarning(f"{args[0].lower} is not a valid key!")
             key = ds.key(str(ctx.guild.id), str(args[0]).lower)
             task = datastore.Entity(key=key)
             task['value'] = str(args[1])
@@ -78,6 +79,25 @@ class Reg(commands.Cog):
             await ctx.send(f"{type(e).__name__}: {e}")
         else:
             await self.print_registry(ctx)
+
+    @registry.group(
+        name="keys",
+        pass_context=True
+    )
+    @is_admin
+    async def keys(self, ctx):
+        keylist = "\n".join(valid_keys)
+        embed = discord.Embed(
+            title="Keylist Query",
+            color=color['message'],
+            description=(
+                f"```"
+                f"{keylist}"
+                f"```"
+            )
+        )
+        embed.set_footer(text=f"Invoked by: {ctx.message.author.name}")
+        await ctx.send(embed=embed)
 
 
 def setup(client):
