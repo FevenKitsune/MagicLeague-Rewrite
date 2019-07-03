@@ -84,7 +84,7 @@ class Reg(commands.Cog):
         name="keys",
         pass_context=True
     )
-    @is_admin
+    @is_admin()
     async def keys(self, ctx):
         keylist = "\n".join(valid_keys)
         embed = discord.Embed(
