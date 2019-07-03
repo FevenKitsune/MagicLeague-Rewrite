@@ -21,8 +21,8 @@ class Reg(commands.Cog):
         embed.set_footer(text=f"Invoked by: {ctx.message.author.name}")
         for result in results:
             embed.add_field(
-                name=f"Key: {result.key.id_or_name}",
-                value=f"Value: {result['value']}",
+                name=f"`Key: {result.key.id_or_name}`",
+                value=f"`Value: {result['value']}`",
                 inline=False
             )
         await ctx.send(embed=embed)
@@ -37,7 +37,7 @@ class Reg(commands.Cog):
     @is_admin()
     async def registry(self, ctx):
         if ctx.invoked_subcommand is None:
-            await ctx.send("No subcommand invoked.")
+            await self.print_registry(ctx)
 
     @registry.group(
         name="get",
@@ -49,6 +49,7 @@ class Reg(commands.Cog):
 
     @registry.group(
         name="set",
+        aliases=["add", "edit"],
         pass_context=True
     )
     @is_admin()
@@ -62,8 +63,7 @@ class Reg(commands.Cog):
         except Exception as e:
             await ctx.send(f"{type(e).__name__}: {e}")
         else:
-            await ctx.send(f"Registry Value Added!\nName: {task['id']}\nValue: {task['value']}")
-        await self.print_registry(ctx)
+            await self.print_registry(ctx)
 
     @registry.group(
         name="delete",
