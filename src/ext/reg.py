@@ -77,8 +77,7 @@ class Reg(commands.Cog):
         except Exception as e:
             await ctx.send(f"{type(e).__name__}: {e}")
         else:
-            await ctx.send(f"Registry Value Deleted!")
-        await self.print_registry(ctx)
+            await self.print_registry(ctx)
 
 
 def setup(client):

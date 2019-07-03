@@ -2,7 +2,7 @@ import logging
 import os
 import discord
 from discord.ext import commands
-from src.util.ds import ds
+from src.util.ds import extensions
 from src.util.prefix import get_prefix
 
 
@@ -11,8 +11,6 @@ client = commands.Bot(
     description="MagicLeague-RW",
     command_prefix=get_prefix
 )
-
-extensions = ["ext.reg"]
 
 if __name__ == "__main__":
     for extension in extensions:
