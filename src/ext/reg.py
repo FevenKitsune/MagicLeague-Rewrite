@@ -44,7 +44,7 @@ class Reg(commands.Cog):
         pass_context=True
     )
     @is_admin()
-    async def get(self, ctx, *args):
+    async def get(self, ctx):
         await self.print_registry(ctx)
 
     @registry.group(
@@ -63,7 +63,7 @@ class Reg(commands.Cog):
             await ctx.send(f"{type(e).__name__}: {e}")
         else:
             await ctx.send(f"Registry Value Added!\nName: {task['id']}\nValue: {task['value']}")
-        await self.print_registry(ctx, results)
+        await self.print_registry(ctx)
 
     @registry.group(
         name="delete",
@@ -78,6 +78,7 @@ class Reg(commands.Cog):
             await ctx.send(f"{type(e).__name__}: {e}")
         else:
             await ctx.send(f"Registry Value Deleted!")
+        await self.print_registry(ctx)
 
 
 def setup(client):
