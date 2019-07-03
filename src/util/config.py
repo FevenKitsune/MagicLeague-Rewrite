@@ -3,3 +3,7 @@ color = {
 }
 
 extensions = ["ext.reg"]
+
+valid_keys = [
+    "prefix"
+]

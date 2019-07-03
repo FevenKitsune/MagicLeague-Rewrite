@@ -55,7 +55,8 @@ class Reg(commands.Cog):
     @is_admin()
     async def set(self, ctx, *args):
         try:
-            key = ds.key(str(ctx.guild.id), str(args[0]))
+            if args[0].lower
+            key = ds.key(str(ctx.guild.id), str(args[0]).lower)
             task = datastore.Entity(key=key)
             task['id'] = str(args[0])
             task['value'] = str(args[1])
