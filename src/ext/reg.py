@@ -56,8 +56,8 @@ class Reg(commands.Cog):
     async def set(self, ctx, *args):
         try:
             if args[0].lower not in valid_keys:
-                raise UserWarning(f"{args[0].lower} is not a valid key!")
-            key = ds.key(str(ctx.guild.id), str(args[0]).lower)
+                raise UserWarning(f"{args[0].lower()} is not a valid key!")
+            key = ds.key(str(ctx.guild.id), str(args[0]).lower())
             task = datastore.Entity(key=key)
             task['value'] = str(args[1])
             ds.put(task)
@@ -73,7 +73,7 @@ class Reg(commands.Cog):
     @is_admin()
     async def delete(self, ctx, *args):
         try:
-            key = ds.key(str(ctx.guild.id), str(args[0]).lower)
+            key = ds.key(str(ctx.guild.id), str(args[0]).lower())
             ds.delete(key)
         except Exception as e:
             await ctx.send(f"{type(e).__name__}: {e}")
@@ -82,6 +82,7 @@ class Reg(commands.Cog):
 
     @registry.group(
         name="keys",
+        aliases=["key", "keylist"],
         pass_context=True
     )
     @is_admin()
