@@ -1,3 +1,5 @@
+# CC0 1.0 Universal
+
 import logging
 import os
 import sys
