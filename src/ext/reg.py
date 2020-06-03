@@ -1,3 +1,5 @@
+# CC0 1.0 Universal
+
 from google.cloud import datastore
 from src.util.ds import ds
 from src.util.config import color, valid_keys
