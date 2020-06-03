@@ -1,3 +1,5 @@
+# CC0 1.0 Universal
+
 color = {
     "message": 0xaaf255
 }
