@@ -1,3 +1,5 @@
+# CC0 1.0 Universal
+
 from src.util.ds import ds
 
 
